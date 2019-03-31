@@ -5,17 +5,14 @@ extern keymap_config_t keymap_config;
 #define _QWERTY 0
 #define _LOWER 1
 #define _RAISE 2
-#define _ADJUST 16
+#define _MEDIA 16
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
   RAISE,
-  ADJUST,
+  MEDIA,
 };
-
-#define CALTDEL LCTL(LALT(KC_DEL))
-#define TSKMGR LCTL(LSFT(KC_ESC))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -27,7 +24,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------+--------|        |--------+--------+--------+--------+--------+--------+--------|
      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LGUI,          KC_SPC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT,
   //|--------+--------+--------+--------+--------+--------+--------|        |--------+--------+--------+--------+--------+--------+--------|
-     KC_LCTL, KC_LGUI, KC_LALT, ADJUST,           LOWER,   KC_LCTL,          KC_SPC,  RAISE,            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+     KC_LCTL, KC_LGUI, KC_LALT, MEDIA,           LOWER,   KC_LCTL,          KC_SPC,  RAISE,            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
   //`--------+--------+--------+--------+--------+--------+--------/        \--------+--------+--------+--------+--------+--------+--------'l
   ),
 
@@ -40,34 +37,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_RAISE] = LAYOUT(
-  KC_ESC,  KC_1,    KC_2,  KC_3,   KC_4,    KC_5,     _______,          _______,     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,  \
-  _______, KC_4,    KC_5,  KC_6,   KC_PLUS, _______,  _______,          _______,     KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______,  _______, \
-  KC_ENT,  KC_7,    KC_8,  KC_9,   KC_MINS, _______,  _______,          _______,   _______,   KC_NUHS, KC_NUBS, KC_MUTE, _______, KC_BSLS, \
-  _______, KC_COMM, KC_0,  KC_DOT, _______, KC_BSPC,                                 KC_BSPC, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY  \
+  KC_ESC,  KC_1,    KC_2,  KC_3,   KC_4,    KC_5,     _______,             _______,   KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,  \
+  _______, KC_4,    KC_5,  KC_6,   KC_PLUS, _______,  _______,             _______,   KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______, \
+  KC_ENT,  KC_7,    KC_8,  KC_9,   KC_MINS, _______,  _______,             _______,   _______, KC_NUHS, KC_NUBS, _______,  _______, KC_BSLS, \
+  _______, KC_COMM, KC_0,  KC_DOT, _______, KC_BSPC,                                  KC_BSPC, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY  \
   ),
 
-  [_ADJUST] = LAYOUT(
-     TSKMGR,  _______,  _______, _______, _______, _______, _______,         _______,  _______, RGB_MOD, RGB_VAI, RGB_SAI, RGB_HUI, CALTDEL,
-     _______, _______,  _______, _______, _______, _______, _______,         _______,  _______, RGB_RMOD, RGB_VAD, RGB_SAD, RGB_HUD, RGB_TOG,
-     _______, _______,  _______, _______, _______, _______, _______,         _______,  _______, _______, _______, _______, _______, BL_STEP,
-     _______, _______, _______, _______,           _______, _______,         _______,  _______,          _______, _______, _______, RESET
+  [_MEDIA] = LAYOUT(
+     _______, _______, _______, _______, _______, _______, KC_MUTE,         KC_VOLU,  KC_MPRV, KC_MPLY, KC_MNXT, _______, _______, _______,
+     _______, _______, _______, _______, _______, _______, _______,         KC_VOLD,  _______, _______, _______, _______, _______, _______,
+     _______, _______, _______, _______, _______, _______, _______,         _______,  _______, _______, _______, _______, _______, _______,
+     _______, _______, _______, _______,          _______, _______,         _______,  _______,          _______, _______, _______, RESET
   )
 
 };
-
-
-
-
-
-
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
-        #ifdef AUDIO_ENABLE
-          PLAY_SONG(tone_qwerty);
-        #endif
         set_single_persistent_default_layer(_QWERTY);
       }
       return false;
@@ -75,28 +63,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LOWER:
       if (record->event.pressed) {
         layer_on(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        update_tri_layer(_LOWER, _RAISE, _MEDIA);
       } else {
         layer_off(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        update_tri_layer(_LOWER, _RAISE, _MEDIA);
       }
       return false;
       break;
     case RAISE:
       if (record->event.pressed) {
         layer_on(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        update_tri_layer(_LOWER, _RAISE, _MEDIA);
       } else {
         layer_off(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        update_tri_layer(_LOWER, _RAISE, _MEDIA);
       }
       return false;
       break;
-    case ADJUST:
+    case MEDIA:
       if (record->event.pressed) {
-        layer_on(_ADJUST);
+        layer_on(_MEDIA);
       } else {
-        layer_off(_ADJUST);
+        layer_off(_MEDIA);
       }
       return false;
       break;
