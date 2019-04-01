@@ -14,6 +14,11 @@ enum custom_keycodes {
   MEDIA,
 };
 
+#define SS_SCRN LGUI(LSFT(KC_3))       // Screenshot entire screen
+#define CP_SCRN LGUI(LCTL(LSFT(KC_3))) // Screenshot and copy entire screen
+#define SS_SELN LGUI(LSFT(KC_4))       // Screenshot selection
+#define CP_SELN LGUI(LCTL(LSFT(KC_4))) // Screenshot and copy selection
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QWERTY] = LAYOUT(
@@ -44,8 +49,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_MEDIA] = LAYOUT(
-     _______, _______, _______, _______, _______, _______, KC_MUTE,         KC_VOLU,  KC_MPRV, KC_MPLY, KC_MNXT, _______, _______, _______,
-     _______, _______, _______, _______, _______, _______, _______,         KC_VOLD,  _______, _______, _______, _______, _______, _______,
+     CP_SCRN, CP_SELN, _______, _______, _______, _______, KC_MUTE,         KC_VOLU,  KC_MPRV, KC_MPLY, KC_MNXT, _______, _______, _______,
+     SS_SCRN, SS_SELN, _______, _______, _______, _______, _______,         KC_VOLD,  _______, _______, _______, _______, _______, _______,
      _______, _______, _______, _______, _______, _______, _______,         _______,  _______, _______, _______, _______, _______, _______,
      _______, _______, _______, _______,          _______, _______,         _______,  _______,          _______, _______, _______, RESET
   )
